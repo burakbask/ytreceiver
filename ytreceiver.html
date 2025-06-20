@@ -7,8 +7,12 @@
     body { font-family: Arial, sans-serif; padding: 1rem; }
     h1, p { margin: .5rem 0; }
     pre {
-      background: #f4f4f4; padding: .75rem; border: 1px solid #ccc;
-      white-space: pre-wrap; max-height: 80vh; overflow-y: auto;
+      background: #f4f4f4;
+      padding: .75rem;
+      border: 1px solid #ccc;
+      white-space: pre-wrap;
+      max-height: 80vh;
+      overflow-y: auto;
     }
   </style>
 </head>
@@ -18,14 +22,16 @@
   <pre id="out">Bekleniyor…</pre>
 
   <script>
-    ;(function() {
+    (function() {
       const out  = document.getElementById("out")
+      // 1) Hash’i al (başındaki #’ı kes)
       const hash = location.hash.slice(1)
       if (!hash) {
         out.textContent = "Hash’te veri bulunamadı."
         return
       }
       try {
+        // 2) Decode & parse & render
         const jsonStr = decodeURIComponent(hash)
         const data    = JSON.parse(jsonStr)
         out.textContent = JSON.stringify(data, null, 2)
