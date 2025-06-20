@@ -1,44 +1,38 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-  <meta charset="UTF-8" />
-  <title>YouTube Veri Alıcı</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 1rem; }
-    h1, p { margin: .5rem 0; }
-    pre {
-      background: #f4f4f4;
-      padding: .75rem;
-      border: 1px solid #ccc;
-      white-space: pre-wrap;
-      max-height: 80vh;
-      overflow-y: auto;
+<script>
+  // Sayfa yüklendiğinde, parent veya opener’dan gelecek mesajları bekle
+  window.addEventListener('message', ev => {
+    // Güvenlik: sadece bizim domain’den geleni al
+    if (ev.origin !== 'https://www.youtube.com' && ev.origin !== window.location.origin) {
+      console.warn('Bilinmeyen origin:', ev.origin);
+      return;
     }
-  </style>
-</head>
-<body>
-  <h1>YouTube Verileriniz</h1>
-  <p>URL hash içindeki veri:</p>
-  <pre id="out">Bekleniyor…</pre>
 
-  <script>
-    (function() {
-      const out  = document.getElementById("out")
-      // 1) Hash’i al (başındaki #’ı kes)
-      const hash = location.hash.slice(1)
-      if (!hash) {
-        out.textContent = "Hash’te veri bulunamadı."
-        return
-      }
-      try {
-        // 2) Decode & parse & render
-        const jsonStr = decodeURIComponent(hash)
-        const data    = JSON.parse(jsonStr)
-        out.textContent = JSON.stringify(data, null, 2)
-      } catch (err) {
-        out.textContent = "Hash verisi okunamadı:\n" + err
-      }
-    })();
-  </script>
-</body>
-</html>
+    let data;
+    try {
+      data = JSON.parse(ev.data);
+    } catch {
+      console.error('Mesaj JSON değil:', ev.data);
+      return;
+    }
+
+    // Aynı render mantığın:
+    const ci = document.getElementById('channel-info');
+    ci.innerHTML = `
+      <strong>Channel ID:</strong> ${data.channelId}<br>
+      <strong>Channel Name:</strong> ${data.channelName}<br>
+      <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
+    `;
+
+    const ul = document.getElementById('subscriptions-list');
+    if (!data.subs || data.subs.length === 0) {
+      ul.innerHTML = '<li>Abonelik bulunamadı.</li>';
+    } else {
+      ul.innerHTML = data.subs
+        .map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a></li>`)
+        .join('');
+    }
+  }, false);
+
+  // eğer istersen, sayfa yüklendiğinde parent’a “hazırım” mesajı gönderebilir
+  window.opener?.postMessage(JSON.stringify({ status: 'ready' }), '*');
+</script>
