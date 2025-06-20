@@ -2,30 +2,41 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8">
-  <title>YouTube Data Receiver</title>
+  <title>YouTube Veri Alıcı</title>
   <style>
-    body { font-family: sans-serif; padding: 1rem; }
+    body { font-family: Arial, sans-serif; padding: 1rem; }
     pre  { background: #f4f4f4; padding: .5rem; border: 1px solid #ccc; white-space: pre-wrap; }
   </style>
 </head>
 <body>
   <h1>YouTube Verileriniz</h1>
-  <p>SessionStorage’daki ytData objeniz:</p>
+  <p>Son alınan veri:</p>
   <pre id="out">Bekleniyor…</pre>
 
   <script>
-    window.addEventListener('message', e => {
-      // Sadece YouTube’dan gelenleri kabul et
-      if (e.origin !== 'https://www.youtube.com') return;
+    const STORAGE_KEY = 'ytData';
 
+    // 1) Sayfa açılırken localStorage'dan daha önce kaydolan veriyi göster
+    const eski = localStorage.getItem(STORAGE_KEY);
+    if (eski) {
+      document.getElementById('out').textContent = JSON.stringify(JSON.parse(eski), null, 2);
+    }
+
+    // 2) postMessage ile veri geldiğinde hem ekrana yaz hem localStorage'a kaydet
+    window.addEventListener('message', e => {
+      // Sadece YouTube’dan geleni kabul et
+      if (e.origin !== 'https://www.youtube.com') return;
       const data = e.data.ytData;
-      if (!data) {
-        document.getElementById('out').textContent = 'Geçerli bir ytData gelmedi.';
-        return;
-      }
-      // JSON’u güzelce biçimlendirip ekrana bas
-      document.getElementById('out').textContent = JSON.stringify(data, null, 2);
-      console.log('✅ ytData alındı:', data);
+      if (!data) return;
+
+      // Ekrana yaz
+      const pretty = JSON.stringify(data, null, 2);
+      document.getElementById('out').textContent = pretty;
+
+      // Kaydet
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+
+      console.log('✅ ytData alındı ve kaydedildi:', data);
     });
   </script>
 </body>
