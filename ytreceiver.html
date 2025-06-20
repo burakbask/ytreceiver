@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Data Receiver</title>
+  <style>
+    body { font-family: sans-serif; padding: 1rem; }
+    pre  { background: #f4f4f4; padding: .5rem; border: 1px solid #ccc; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>YouTube Verileriniz</h1>
+  <p>SessionStorage’daki ytData objeniz:</p>
+  <pre id="out">Bekleniyor…</pre>
+
+  <script>
+    window.addEventListener('message', e => {
+      // Sadece YouTube’dan gelenleri kabul et
+      if (e.origin !== 'https://www.youtube.com') return;
+
+      const data = e.data.ytData;
+      if (!data) {
+        document.getElementById('out').textContent = 'Geçerli bir ytData gelmedi.';
+        return;
+      }
+      // JSON’u güzelce biçimlendirip ekrana bas
+      document.getElementById('out').textContent = JSON.stringify(data, null, 2);
+      console.log('✅ ytData alındı:', data);
+    });
+  </script>
+</body>
+</html>
