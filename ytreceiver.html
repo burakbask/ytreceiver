@@ -1,38 +1,62 @@
-<script>
-  // Sayfa yüklendiğinde, parent veya opener’dan gelecek mesajları bekle
-  window.addEventListener('message', ev => {
-    // Güvenlik: sadece bizim domain’den geleni al
-    if (ev.origin !== 'https://www.youtube.com' && ev.origin !== window.location.origin) {
-      console.warn('Bilinmeyen origin:', ev.origin);
-      return;
-    }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Data Receiver</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    h2, h3 { margin-bottom: 10px; }
+    #channel-info { margin-bottom: 20px; }
+    ul { list-style: none; padding-left: 0; }
+    li { margin: 5px 0; }
+    a { text-decoration: none; color: #065fd4; }
+  </style>
+</head>
+<body>
+  <h2>Kaydedilmiş YouTube Verileri</h2>
+  <div id="channel-info">Gönderilen veri bekleniyor...</div>
+  <h3>Abonelik Listesi</h3>
+  <ul id="subscriptions-list"><li>Veri bekleniyor...</li></ul>
 
-    let data;
-    try {
-      data = JSON.parse(ev.data);
-    } catch {
-      console.error('Mesaj JSON değil:', ev.data);
-      return;
-    }
+  <script>
+    // 1) Receiver hazır olduğunu gönder
+    window.opener?.postMessage(JSON.stringify({ status: 'ready' }), '*');
 
-    // Aynı render mantığın:
-    const ci = document.getElementById('channel-info');
-    ci.innerHTML = `
-      <strong>Channel ID:</strong> ${data.channelId}<br>
-      <strong>Channel Name:</strong> ${data.channelName}<br>
-      <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
-    `;
+    // 2) Mesajı dinle
+    window.addEventListener('message', ev => {
+      // Güvenlik: ya YouTube origin’inden ya da kendi origin’inden gelsin
+      if (ev.origin !== 'https://www.youtube.com' &&
+          ev.origin !== 'https://ytreceiver.vercel.app') {
+        console.warn('Bilinmeyen origin:', ev.origin);
+        return;
+      }
 
-    const ul = document.getElementById('subscriptions-list');
-    if (!data.subs || data.subs.length === 0) {
-      ul.innerHTML = '<li>Abonelik bulunamadı.</li>';
-    } else {
-      ul.innerHTML = data.subs
-        .map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a></li>`)
-        .join('');
-    }
-  }, false);
+      let data;
+      try {
+        data = JSON.parse(ev.data);
+      } catch {
+        console.error('Mesaj JSON değil:', ev.data);
+        return;
+      }
 
-  // eğer istersen, sayfa yüklendiğinde parent’a “hazırım” mesajı gönderebilir
-  window.opener?.postMessage(JSON.stringify({ status: 'ready' }), '*');
-</script>
+      // Kanal bilgilerini göster
+      const ci = document.getElementById('channel-info');
+      ci.innerHTML = `
+        <strong>Channel ID:</strong> ${data.channelId}<br>
+        <strong>Channel Name:</strong> ${data.channelName}<br>
+        <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
+      `;
+
+      // Abonelikleri listele
+      const ul = document.getElementById('subscriptions-list');
+      if (!data.subs || data.subs.length === 0) {
+        ul.innerHTML = '<li>Abonelik bulunamadı.</li>';
+      } else {
+        ul.innerHTML = data.subs
+          .map(s => `<li><a href="${s.url}" target="_blank">${s.title}</a></li>`)
+          .join('');
+      }
+    }, false);
+  </script>
+</body>
+</html>
