@@ -16,26 +16,24 @@
   <script>
     const STORAGE_KEY = 'ytData';
 
-    // 1) Sayfa açılırken localStorage'dan daha önce kaydolan veriyi göster
+    // 1) Sayfa açılınca önce localStorage’dan bak
     const eski = localStorage.getItem(STORAGE_KEY);
     if (eski) {
       document.getElementById('out').textContent = JSON.stringify(JSON.parse(eski), null, 2);
     }
 
-    // 2) postMessage ile veri geldiğinde hem ekrana yaz hem localStorage'a kaydet
+    // 2) iframe’den ya da manual postMessage’dan gelen yeni veriyi dinle
     window.addEventListener('message', e => {
-      // Sadece YouTube’dan geleni kabul et
       if (e.origin !== 'https://www.youtube.com') return;
       const data = e.data.ytData;
       if (!data) return;
 
-      // Ekrana yaz
+      // ekranda göster
       const pretty = JSON.stringify(data, null, 2);
       document.getElementById('out').textContent = pretty;
 
-      // Kaydet
+      // kalıcı olarak sakla
       localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-
       console.log('✅ ytData alındı ve kaydedildi:', data);
     });
   </script>
