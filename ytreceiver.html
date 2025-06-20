@@ -1,25 +1,11 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
-  <title>YouTube Veri Alıcı</title>
+  <meta charset="UTF-8" />
+  <title>YouTube Veri Alıcı (Session)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 1rem;
-      background: #fafafa;
-    }
-    h1 {
-      margin-bottom: .5rem;
-    }
-    pre {
-      background: #f4f4f4;
-      padding: .75rem;
-      border: 1px solid #ccc;
-      white-space: pre-wrap;
-      max-height: 80vh;
-      overflow-y: auto;
-    }
+    body { font-family: Arial, sans-serif; padding: 1rem; background: #fafafa; }
+    pre  { background: #f4f4f4; padding: .75rem; border: 1px solid #ccc; white-space: pre-wrap; max-height: 80vh; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -31,28 +17,25 @@
     (function() {
       const STORAGE_KEY = 'ytData';
 
-      // 1) Sayfa açılınca önce localStorage’dan bak
-      const eski = localStorage.getItem(STORAGE_KEY);
+      // Sayfa açılınca önce sessionStorage’dan kontrol et
+      const eski = sessionStorage.getItem(STORAGE_KEY);
       if (eski) {
         document.getElementById('out').textContent =
           JSON.stringify(JSON.parse(eski), null, 2);
       }
 
-      // 2) postMessage ile gelen yeni veriyi dinle
+      // postMessage ile gelen veriyi dinle
       window.addEventListener('message', e => {
-        // Mesajın kaynağı YouTube olmalı
         if (e.origin !== 'https://www.youtube.com') return;
         const data = e.data.ytData;
         if (!data) return;
 
-        // Ekranda göster
         const pretty = JSON.stringify(data, null, 2);
         document.getElementById('out').textContent = pretty;
 
-        // Kalıcı olarak sakla
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-
-        console.log('✅ ytData alındı ve kaydedildi:', data);
+        // sessionStorage’a kaydet
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+        console.log('✅ ytData alındı ve sessionStorage’a kaydedildi:', data);
       });
     })();
   </script>
