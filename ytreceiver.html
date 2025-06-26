@@ -89,7 +89,7 @@
     .section-content.active {
       display: block;
     }
-    #video-info strong {
+    #video-info strong, #comments strong {
       color: var(--accent);
     }
     ul {
@@ -118,6 +118,19 @@
     .subscription-link i {
       margin-right: 0.25rem;
     }
+    .comment-item {
+      margin: 1rem 0;
+      padding: 0.75rem;
+      background: #252525;
+      border-radius: 8px;
+    }
+    .comment-item strong {
+      color: var(--accent);
+    }
+    .comment-content {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -131,11 +144,13 @@
     <div class="button-container">
       <button class="section-button" onclick="toggleSection('subscriptions-list')">Abonelik Listesi</button>
       <button class="section-button" onclick="toggleSection('video-info')">Video Bilgileri</button>
+      <button class="section-button" onclick="toggleSection('comments')">Yorumlar</button>
     </div>
     <div id="subscriptions-list" class="section-content active">
       <ul><li>Veri bekleniyor...</li></ul>
     </div>
     <div id="video-info" class="section-content">Gönderilen video verileri bekleniyor...</div>
+    <div id="comments" class="section-content">Gönderilen yorumlar bekleniyor...</div>
   </div>
 
   <script>
@@ -203,6 +218,28 @@
           <strong>Görüntülenme Sayısı:</strong> ${data.videoInfo.viewCount || 'N/A'}<br>
           <strong>Açıklama:</strong> ${data.videoInfo.description || 'N/A'}
         `;
+      }
+
+      // Yorumlar
+      if (data.comments) {
+        const commentsSection = document.getElementById('comments');
+        if (!data.comments || data.comments.length === 0) {
+          commentsSection.innerHTML = '<p>Yorum bulunamadı.</p>';
+        } else {
+          commentsSection.innerHTML = `
+            <ul>
+              ${data.comments
+                .map(c => `
+                  <li class="comment-item">
+                    <strong>Yazar:</strong> ${c.author || 'Bilinmiyor'}<br>
+                    <strong>Yayınlanma Zamanı:</strong> ${c.publishedTime || 'N/A'}<br>
+                    <div class="comment-content">${c.content || 'Yorum içeriği yok'}</div>
+                  </li>
+                `)
+                .join('')}
+            </ul>
+          `;
+        }
       }
     }, false);
   </script>
