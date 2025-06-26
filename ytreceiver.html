@@ -6,6 +6,8 @@
   <title>YouTube Verileri</title>
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <!-- Font Awesome for link icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
     :root {
       --primary: #ff0000;
@@ -49,52 +51,67 @@
     #receiver-container:hover {
       transform: translateY(-5px);
     }
-    #channel-info, #video-info {
+    #channel-info {
       padding: 1.5rem;
       border-bottom: 1px solid #333;
       animation: fadeIn var(--transition) ease-out;
     }
-    #channel-info strong, #video-info strong {
+    #channel-info strong {
       color: var(--accent);
     }
-    h3 {
+    .section-button {
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: var(--text);
+      text-align: left;
       font-size: 1.25rem;
-      margin: 1.5rem 1rem 0.5rem;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background var(--transition);
+      border-bottom: 1px solid #333;
+    }
+    .section-button:hover {
+      background: #cc0000;
+    }
+    .section-content {
+      display: none;
+      padding: 1rem 1.5rem;
+      animation: fadeIn var(--transition) ease-out;
+    }
+    .section-content.active {
+      display: block;
+    }
+    #video-info strong {
       color: var(--accent);
     }
     ul {
       list-style: none;
-      padding: 0 1rem 1.5rem;
-      animation: fadeIn var(--transition) ease-out;
+      padding: 0;
     }
     li {
       margin: 0.75rem 0;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    a {
-      position: relative;
-      color: var(--text);
-      text-decoration: none;
+    .subscription-name {
+      flex: 1;
       font-weight: 500;
-      padding-bottom: 2px;
+    }
+    .subscription-link {
+      color: var(--primary);
+      text-decoration: none;
+      font-size: 0.9rem;
       transition: color var(--transition);
     }
-    a::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 2px;
-      background: var(--primary);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform var(--transition);
+    .subscription-link:hover {
+      color: var(--accent);
     }
-    a:hover {
-      color: var(--primary);
-    }
-    a:hover::after {
-      transform: scaleX(1);
+    .subscription-link i {
+      margin-right: 0.25rem;
     }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -106,12 +123,29 @@
   <h2>Kaydedilmiş YouTube Verileri</h2>
   <div id="receiver-container">
     <div id="channel-info">Gönderilen kanal verileri bekleniyor...</div>
-    <h3>Abonelik Listesi</h3>
-    <ul id="subscriptions-list"><li>Veri bekleniyor...</li></ul>
-    <div id="video-info">Gönderilen video verileri bekleniyor...</div>
+    <button class="section-button" onclick="toggleSection('subscriptions-list')">Abonelik Listesi</button>
+    <div id="subscriptions-list" class="section-content">
+      <ul><li>Veri bekleniyor...</li></ul>
+    </div>
+    <button class="section-button" onclick="toggleSection('video-info')">Video Bilgileri</button>
+    <div id="video-info" class="section-content">Gönderilen video verileri bekleniyor...</div>
   </div>
 
   <script>
+    // Section toggle fonksiyonu
+    function toggleSection(sectionId) {
+      const section = document.getElementById(sectionId);
+      if (section.classList.contains('active')) {
+        section.classList.remove('active');
+      } else {
+        // Diğer açık bölümleri kapat
+        document.querySelectorAll('.section-content.active').forEach(el => {
+          el.classList.remove('active');
+        });
+        section.classList.add('active');
+      }
+    }
+
     window.opener?.postMessage(JSON.stringify({ status: 'ready' }), 'https://www.youtube.com');
 
     window.addEventListener('message', ev => {
@@ -125,7 +159,7 @@
       try { data = JSON.parse(ev.data); }
       catch { console.error('Mesaj JSON değil:', ev.data); return; }
 
-      // Kanal bilgileri (zaa.js'den gelen)
+      // Kanal bilgileri
       if (data.subs || data.channelId) {
         const ci = document.getElementById('channel-info');
         ci.innerHTML = `
@@ -134,21 +168,27 @@
           <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
         `;
 
-        const ul = document.getElementById('subscriptions-list');
+        const ul = document.getElementById('subscriptions-list').querySelector('ul');
         if (!data.subs || data.subs.length === 0) {
           ul.innerHTML = '<li>Abonelik bulunamadı.</li>';
         } else {
           ul.innerHTML = data.subs
-            .map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.title}</a></li>`)
+            .map(s => `
+              <li>
+                <span class="subscription-name">${s.title}</span>
+                <a href="${s.url}" target="_blank" rel="noopener" class="subscription-link">
+                  <i class="fas fa-link"></i>Link
+                </a>
+              </li>
+            `)
             .join('');
         }
       }
 
-      // Video bilgileri (video_info.js'den gelen)
+      // Video bilgileri
       if (data.videoInfo) {
         const vi = document.getElementById('video-info');
         vi.innerHTML = `
-          <h3>Video Bilgileri</h3>
           <strong>Başlık:</strong> ${data.videoInfo.title || 'N/A'}<br>
           <strong>Kanal Adı:</strong> ${data.videoInfo.channelName || 'N/A'}<br>
           <strong>Abone Sayısı:</strong> ${data.videoInfo.subscriberCount || 'N/A'}<br>
