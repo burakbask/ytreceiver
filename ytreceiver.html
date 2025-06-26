@@ -99,7 +99,7 @@
     li {
       margin: 0.75rem 0;
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       gap: 0.5rem;
     }
     .subscription-name {
@@ -123,13 +123,18 @@
       padding: 0.75rem;
       background: #252525;
       border-radius: 8px;
+      width: 100%; /* Kapsayıcıya tam sığsın */
+      box-sizing: border-box;
     }
     .comment-item strong {
-      color: var(--accent);
+      display: block; /* Her bir strong ayrı satırda */
+      margin-bottom: 0.25rem;
     }
     .comment-content {
       margin-top: 0.5rem;
       font-size: 0.9rem;
+      word-wrap: break-word; /* Uzun metinler kaymasın, satır sonuna aksın */
+      max-width: 100%; /* Kapsayıcıyı aşmasın */
     }
     .error-message {
       color: #ff5555;
