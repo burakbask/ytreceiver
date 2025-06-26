@@ -44,16 +44,17 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       overflow: hidden;
       transition: transform var(--transition);
+      margin-bottom: 2rem;
     }
     #receiver-container:hover {
       transform: translateY(-5px);
     }
-    #channel-info {
+    #channel-info, #video-info {
       padding: 1.5rem;
       border-bottom: 1px solid #333;
       animation: fadeIn var(--transition) ease-out;
     }
-    #channel-info strong {
+    #channel-info strong, #video-info strong {
       color: var(--accent);
     }
     h3 {
@@ -104,13 +105,14 @@
 <body>
   <h2>Kaydedilmiş YouTube Verileri</h2>
   <div id="receiver-container">
-    <div id="channel-info">Gönderilen veri bekleniyor...</div>
+    <div id="channel-info">Gönderilen kanal verileri bekleniyor...</div>
     <h3>Abonelik Listesi</h3>
     <ul id="subscriptions-list"><li>Veri bekleniyor...</li></ul>
+    <div id="video-info">Gönderilen video verileri bekleniyor...</div>
   </div>
 
   <script>
-    window.opener?.postMessage(JSON.stringify({ status: 'ready' }), '*');
+    window.opener?.postMessage(JSON.stringify({ status: 'ready' }), 'https://www.youtube.com');
 
     window.addEventListener('message', ev => {
       if (ev.origin !== 'https://www.youtube.com' &&
@@ -123,20 +125,37 @@
       try { data = JSON.parse(ev.data); }
       catch { console.error('Mesaj JSON değil:', ev.data); return; }
 
-      const ci = document.getElementById('channel-info');
-      ci.innerHTML = `
-        <strong>Channel ID:</strong> ${data.channelId}<br>
-        <strong>Channel Name:</strong> ${data.channelName}<br>
-        <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
-      `;
+      // Kanal bilgileri (zaa.js'den gelen)
+      if (data.subs || data.channelId) {
+        const ci = document.getElementById('channel-info');
+        ci.innerHTML = `
+          <strong>Channel ID:</strong> ${data.channelId || 'N/A'}<br>
+          <strong>Channel Name:</strong> ${data.channelName || 'N/A'}<br>
+          <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
+        `;
 
-      const ul = document.getElementById('subscriptions-list');
-      if (!data.subs || data.subs.length === 0) {
-        ul.innerHTML = '<li>Abonelik bulunamadı.</li>';
-      } else {
-        ul.innerHTML = data.subs
-          .map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.title}</a></li>`)
-          .join('');
+        const ul = document.getElementById('subscriptions-list');
+        if (!data.subs || data.subs.length === 0) {
+          ul.innerHTML = '<li>Abonelik bulunamadı.</li>';
+        } else {
+          ul.innerHTML = data.subs
+            .map(s => `<li><a href="${s.url}" target="_blank" rel="noopener">${s.title}</a></li>`)
+            .join('');
+        }
+      }
+
+      // Video bilgileri (video_info.js'den gelen)
+      if (data.videoInfo) {
+        const vi = document.getElementById('video-info');
+        vi.innerHTML = `
+          <h3>Video Bilgileri</h3>
+          <strong>Başlık:</strong> ${data.videoInfo.title || 'N/A'}<br>
+          <strong>Kanal Adı:</strong> ${data.videoInfo.channelName || 'N/A'}<br>
+          <strong>Abone Sayısı:</strong> ${data.videoInfo.subscriberCount || 'N/A'}<br>
+          <strong>Beğeni Sayısı:</strong> ${data.videoInfo.likeCountText || 'N/A'}<br>
+          <strong>Görüntülenme Sayısı:</strong> ${data.videoInfo.viewCount || 'N/A'}<br>
+          <strong>Açıklama:</strong> ${data.videoInfo.description || 'N/A'}
+        `;
       }
     }, false);
   </script>
