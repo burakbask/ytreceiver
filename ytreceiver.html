@@ -131,6 +131,10 @@
       margin-top: 0.5rem;
       font-size: 0.9rem;
     }
+    .error-message {
+      color: #ff5555;
+      font-style: italic;
+    }
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
@@ -224,7 +228,7 @@
       if (data.comments) {
         const commentsSection = document.getElementById('comments');
         if (!data.comments || data.comments.length === 0) {
-          commentsSection.innerHTML = '<p>Yorum bulunamadı.</p>';
+          commentsSection.innerHTML = '<p class="error-message">Yorum bulunamadı veya yorumlar kapalı.</p>';
         } else {
           commentsSection.innerHTML = `
             <ul>
