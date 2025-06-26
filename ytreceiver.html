@@ -151,9 +151,9 @@
   <div id="receiver-container">
     <div id="channel-info">Gönderilen kanal verileri bekleniyor...</div>
     <div class="button-container">
-      <button class="section-button" onclick="toggleSection('subscriptions-list')">Abonelik Listesi</button>
-      <button class="section-button" onclick="toggleSection('video-info')">Video Bilgileri</button>
-      <button class="section-button" onclick="toggleSection('comments')">Yorumlar</button>
+      <button class="section-button" onclick="toggleSection('subscriptions-list')">Kullanıcının Abonelik Listesi</button>
+      <button class="section-button" onclick="toggleSection('video-info')">İzlediği Video Bilgileri</button>
+      <button class="section-button" onclick="toggleSection('comments')">İzlediği Videodaki Yorumlar</button>
     </div>
     <div id="subscriptions-list" class="section-content active">
       <ul><li>Veri bekleniyor...</li></ul>
@@ -194,9 +194,9 @@
       if (data.subs || data.channelId) {
         const ci = document.getElementById('channel-info');
         ci.innerHTML = `
-          <strong>Channel ID:</strong> ${data.channelId || 'N/A'}<br>
-          <strong>Channel Name:</strong> ${data.channelName || 'N/A'}<br>
-          <strong>Channel Handle:</strong> ${data.channelHandle || 'Tespit edilemedi'}
+          <strong>Kullanıcının Kanal ID'si:</strong> ${data.channelId || 'N/A'}<br>
+          <strong>Kullanıcının Gerçek Adı:</strong> ${data.channelName || 'N/A'}<br>
+          <strong>Kullanıcı Adı:</strong> ${data.channelHandle || 'Tespit edilemedi'}
         `;
 
         const ul = document.getElementById('subscriptions-list').querySelector('ul');
