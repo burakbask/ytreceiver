@@ -1,58 +1,90 @@
-GİZLİLİK POLİTİKASI
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gizlilik Politikası – Social Zeduva</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 20px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+      background-color: #f9f9f9;
+    }
+    h1, h2 {
+      color: #333;
+    }
+    h1 {
+      margin-bottom: 0.5em;
+    }
+    h2 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+    }
+    p, ul {
+      margin-bottom: 1em;
+    }
+    ul {
+      padding-left: 1.2em;
+    }
+  </style>
+</head>
+<body>
 
-Yürürlük Tarihi: 1 Temmuz 2025
+  <h1>GİZLİLİK POLİTİKASI</h1>
+  <p><strong>Yürürlük Tarihi:</strong> 1 Temmuz 2025</p>
 
-1. Kapsam
-Bu gizlilik politikası, Social Zeduva (“biz”, “şirket”, “Zeduva”) tarafından işletilen social.zeduva.com web sitesi ve Chrome uzantımız (“UZANTI” ) aracılığıyla sağlanan hizmetlerin (“Hizmet”) kullanıcılarının (bundan sonra “kullanıcı”, “siz”) kişisel verilerinin toplanması, kullanılması, saklanması ve paylaşılması ile ilgili esasları düzenler.
+  <h2>1. Kapsam</h2>
+  <p>Bu gizlilik politikası, <strong>Social Zeduva</strong> (“biz”, “şirket”, “Zeduva”) tarafından işletilen <a href="https://social.zeduva.com">social.zeduva.com</a> web sitesi ve Chrome uzantımız (“UZANTI”) aracılığıyla sağlanan hizmetlerin (“Hizmet”) kullanıcılarının (“kullanıcı”, “siz”) kişisel verilerinin toplanması, kullanılması, saklanması ve paylaşılması ile ilgili esasları düzenler.</p>
 
-2. Toplanan Veriler
+  <h2>2. Toplanan Veriler</h2>
+  <ul>
+    <li><strong>Kişisel Veri:</strong> Uzantı ve web sitemiz kullanıcıların isim, e-posta, konum, IP adresi gibi kişisel verilerini <strong>TOPLAMAZ</strong>.</li>
+    <li><strong>Otomatik İşlenen Veri:</strong>
+      <ul>
+        <li>Uzantı üzerinden görüntülenen YouTube video sayfasındaki tekil video kimliği (<code>v</code> parametresi)</li>
+        <li>Siteden çekilen video meta verileri (video başlığı, küçük resim URL’si, yayın tarihi vb.) — tamamı kamuya açık bilgiler.</li>
+      </ul>
+    </li>
+  </ul>
 
-Kişisel Veri: Uzantı ve web sitemiz kullanıcıların isim, e-posta, konum, IP adresi gibi kişisel verilerini TOPLAMAZ.
+  <h2>3. Verinin Kullanım Amacı</h2>
+  <ul>
+    <li>Kullanıcı tercihlerine göre özelleştirilmiş video öneri listesi oluşturmak.</li>
+    <li>Hizmet kalitesini izlemek ve hataları teşhis etmek (ancak bu amaçla IP, kimlik vb. kişisel veri saklanmaz).</li>
+  </ul>
 
-Otomatik İşlenen Veri:
+  <h2>4. Çerezler ve Benzer Teknolojiler</h2>
+  <p>Hizmetimiz, kullanıcı tarafında çerez (cookie) veya <code>localStorage</code> vb. kalıcı depolama mekanizmaları kullanmaz. Tarayıcıda yalnızca oturum süresince geçerli geçici depolama (background memory) kullanılır; tarayıcı kapatıldığında temizlenir.</p>
 
-Uzantı üzerinden görüntülenen YouTube video sayfasındaki tekil video kimliği (v parametresi)
+  <h2>5. Veri Paylaşımı</h2>
+  <ul>
+    <li>Toplanan hiçbir veri üçüncü şahıslara satılmaz, kiralanmaz veya devredilmez.</li>
+    <li>Zorunlu hallerde (örneğin kanuni bir talep) resmi merci taleplerine yanıt verilebilir.</li>
+  </ul>
 
-Siteden çekilen video meta verileri (video başlığı, küçük resim URL’si, yayın tarihi vb.) — tamamı kamuya açık bilgiler.
+  <h2>6. Güvenlik</h2>
+  <ul>
+    <li>Hizmetimizde, veri iletimini HTTPS protokolü üzerinden gerçekleştiriyoruz.</li>
+    <li>Sunucu tarafında en güncel güvenlik önlemleri (güncel yazılım, erişim kısıtlamaları) uygulanmaktadır.</li>
+  </ul>
 
-3. Verinin Kullanım Amacı
+  <h2>7. Çocukların Gizliliği</h2>
+  <p>Hizmetimiz, 18 yaş altındaki çocuklardan bilinçli şekilde kişisel veri toplamaz. Eğer bir ebeveyn, çocuğuna ait bir kişisel verinin yanlışlıkla toplandığını düşünüyorsa, lütfen bizimle iletişime geçsin.</p>
 
-Kullanıcı tercihlerine göre özelleştirilmiş video öneri listesi oluşturmak.
+  <h2>8. Politikadaki Değişiklikler</h2>
+  <p>Bu gizlilik politikası zaman zaman güncellenebilir. Güncellemeler “Yürürlük Tarihi” başlığı altındaki tarih güncellenerek duyurulacaktır. Önemli değişikliklerde site ana sayfası ve uzantı üzerinden bildirim yapılabilir.</p>
 
-Hizmet kalitesini izlemek ve hataları teşhis etmek (ancak bu amaçla IP, kimlik vb. kişisel veri saklanmaz).
+  <h2>9. İletişim</h2>
+  <p>Gizlilik uygulamalarımızla ilgili her türlü soru, talep veya itirazınız için lütfen bize ulaşın:</p>
+  <ul>
+    <li><strong>E-posta:</strong> <a href="mailto:burakcanbaskin2@gmail.com">burakcanbaskin2@gmail.com</a></li>
+    <li><strong>Adres:</strong> Eryaman Mahallesi, 337. Sokak No:4/10, Etimesgut/Ankara</li>
+  </ul>
 
-4. Çerezler ve Benzer Teknolojiler
-
-Hizmetimiz, kullanıcı tarafında çerez (cookie) veya localStorage vb. kalıcı depolama mekanizmaları kullanmaz.
-
-Tarayıcıda yalnızca oturum süresince geçerli geçici depolama (background memory) kullanılır; tarayıcı kapatıldığında temizlenir.
-
-5. Veri Paylaşımı
-
-Toplanan hiçbir veri üçüncü şahıslara satılmaz, kiralanmaz veya devredilmez.
-
-Zorunlu hallerde (örneğin kanuni bir talep) resmi merci taleplerine yanıt verilebilir.
-
-6. Güvenlik
-
-Hizmetimizde, veri iletimini HTTPS protokolü üzerinden gerçekleştiriyoruz.
-
-Sunucu tarafında en güncel güvenlik önlemleri (güncel yazılım, erişim kısıtlamaları) uygulanmaktadır.
-
-7. Çocukların Gizliliği
-
-Hizmetimiz, 18 yaş altındaki çocuklardan bilinçli şekilde kişisel veri toplamaz. Eğer bir ebeveyn, çocuğuna ait bir kişisel verinin yanlışlıkla toplandığını düşünüyorsa, lütfen bizimle iletişime geçsin.
-
-8. Politikadaki Değişiklikler
-
-Bu gizlilik politikası zaman zaman güncellenebilir. Güncellemeler “Yürürlük Tarihi” başlığı altındaki tarih güncellenerek duyurulacaktır.
-
-Önemli değişikliklerde site ana sayfası ve uzantı üzerinden bildirim yapılabilir.
-
-9. İletişim
-Gizlilik uygulamalarımızla ilgili her türlü soru, talep veya itirazınız için lütfen aşağıdaki adreslerden bize ulaşın:
-
-E-posta: burakcanbaskin2@gmail.com
-
-Adres: Eryaman mahallesi, 337. sokak 4/10 Etimesgut/Ankara
-
+</body>
+</html>
